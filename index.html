@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Переход к игре</title>
+<style>
+  :root {
+    --bg: #0f1115;
+    --text: #ffffff;
+    --muted: #9aa3ad;
+    --accent: #4f8cff;
+    --accent-hover: #3b78e0;
+    --accent-text: #ffffff;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body {
+    height: 100%;
+    overflow: hidden;
+  }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: clamp(16px, 3.5vh, 32px) clamp(14px, 4vw, 28px);
+    padding-top: max(clamp(20px, 4vh, 36px), env(safe-area-inset-top));
+    padding-bottom: max(clamp(10px, 2vh, 20px), env(safe-area-inset-bottom));
+    text-align: center;
+    transition: background .3s, color .3s;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  .container {
+    width: 100%;
+    max-width: 360px;
+    max-height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: clamp(18px, 3vh, 32px);
+  }
+
+  #logo {
+    display: block;
+    max-width: min(320px, 78vw);
+    max-height: clamp(64px, 16vh, 140px);
+    width: auto;
+    height: auto;
+    object-fit: contain;
+    flex-shrink: 0;
+    margin-top: -4px;
+  }
+
+  h1 {
+    font-size: clamp(20px, 4vw, 26px);
+    font-weight: 700;
+    line-height: 1.2;
+    letter-spacing: -0.01em;
+    flex-shrink: 0;
+    max-width: min(320px, 100%);
+  }
+
+  p.sub {
+    font-size: clamp(13px, 2.4vw, 15px);
+    color: var(--muted);
+    line-height: 1.45;
+    max-width: min(310px, 100%);
+    flex-shrink: 0;
+  }
+
+  #qr {
+    background: #fff;
+    padding: clamp(12px, 2vh, 18px);
+    border-radius: clamp(14px, 2.4vh, 20px);
+    display: inline-flex;
+    flex-shrink: 1;
+    min-height: 0;
+    line-height: 0;
+    box-shadow:
+      0 2px 4px rgba(0, 0, 0, .08),
+      0 8px 20px rgba(0, 0, 0, .12),
+      0 20px 40px rgba(0, 0, 0, .10);
+    outline: 1px solid rgba(0, 0, 0, .06);
+    outline-offset: -1px;
+  }
+  #qr img, #qr canvas {
+    display: block;
+    width: clamp(170px, min(68vw, 38vh), 320px);
+    height: clamp(170px, min(68vw, 38vh), 320px);
+  }
+
+  .btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    background: var(--accent);
+    color: var(--accent-text);
+    text-decoration: none;
+    padding: clamp(14px, 2.2vh, 18px) clamp(20px, 5vw, 28px);
+    border-radius: clamp(12px, 2vh, 14px);
+    font-size: clamp(15px, 2.8vw, 17px);
+    font-weight: 600;
+    border: none;
+    cursor: pointer;
+    width: 100%;
+    min-height: 0;
+    flex-shrink: 0;
+    margin-top: clamp(4px, 1vh, 10px);
+    transition: background .2s, transform .1s;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, .18);
+  }
+  .btn:hover { background: var(--accent-hover); }
+  .btn:active { transform: scale(.98); }
+  .btn svg {
+    width: clamp(18px, 2.8vh, 22px);
+    height: clamp(18px, 2.8vh, 22px);
+    flex-shrink: 0;
+  }
+
+  .error { color: #ff6b6b; font-size: clamp(14px, 2.6vw, 16px); line-height: 1.5; }
+  .hidden { display: none !important; }
+  #loading { font-size: clamp(18px, 2.6vw, 20px); color: var(--muted); }
+
+  @media (max-height: 520px) {
+    p.sub { display: none; }
+    h1 { font-size: clamp(16px, 3.4vw, 20px); }
+    #logo { max-height: 40px; margin-top: 0; }
+    #qr img, #qr canvas { width: clamp(120px, 24vh, 170px); height: clamp(120px, 24vh, 170px); }
+    .btn { padding: 10px 16px; font-size: 13.5px; margin-top: 0; }
+    .container { gap: 10px; }
+  }
+
+  @media (max-height: 520px) and (orientation: landscape) and (min-width: 560px) {
+    .container {
+      max-width: 660px;
+      display: grid;
+      grid-template-columns: auto 1fr;
+      grid-template-areas:
+        "logo  head"
+        "qr    sub"
+        "qr    btn";
+      column-gap: clamp(22px, 4vw, 36px);
+      row-gap: clamp(10px, 1.8vh, 16px);
+      align-items: center;
+      text-align: left;
+    }
+    #logo { grid-area: logo; margin: 0; max-height: 56px; max-width: 220px; }
+    h1 { grid-area: head; }
+    p.sub { grid-area: sub; max-width: none; display: block; }
+    #qr { grid-area: qr; }
+    .btn { grid-area: btn; margin-top: 0; }
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <div id="loading">Загрузка…</div>
+
+  <div id="desktop" class="hidden">
+    <img id="logo" class="hidden" alt="">
+    <h1 id="title" class="hidden"></h1>
+    <p class="sub">Отсканируйте QR-код, чтобы открыть игру на телефоне.</p>
+    <div id="qr"></div>
+
+    <button class="btn" id="copyBtn">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
+        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+      </svg>
+      Скопировать ссылку
+    </button>
+  </div>
+
+  <div id="error" class="hidden">
+    <h1>Игра не найдена</h1>
+    <p class="error" id="errorText"></p>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
+
+<script>
+(async function () {
+  const params = new URLSearchParams(window.location.search);
+  const ref = params.get('ref') || '';
+  const gameKey = params.get('game') || '';
+  const force = params.get('force');
+
+  let config;
+  try {
+    const res = await fetch('config.json', { cache: 'no-store' });
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+    config = await res.json();
+  } catch (e) {
+    showError('Не удалось загрузить конфигурацию: ' + e.message);
+    return;
+  }
+
+  const key = gameKey || config.defaultGame;
+  const game = key && config.games ? config.games[key] : null;
+
+  if (!game) {
+    showError(
+      gameKey
+        ? 'Игра «' + escapeHtml(gameKey) + '» не найдена в конфигурации.'
+        : 'В ссылке не указан параметр ?game=, и не задана игра по умолчанию.'
+    );
+    return;
+  }
+
+  const finalUrl = buildUrl(game.url, game.refParam || 'ref', ref);
+
+  const ua = navigator.userAgent || '';
+  let isMobile =
+    /Android|iPhone|iPad|iPod|Opera Mini|IEMobile|Mobile/i.test(ua) ||
+    (navigator.maxTouchPoints > 1 && /Macintosh/.test(ua));
+
+  if (force === 'desktop') isMobile = false;
+  if (force === 'mobile')  isMobile = true;
+
+  if (isMobile) {
+    window.location.replace(finalUrl);
+    return;
+  }
+
+  applyTheme(game.theme || {});
+
+  document.getElementById('loading').classList.add('hidden');
+  document.getElementById('desktop').classList.remove('hidden');
+  document.getElementById('desktop').style.display = 'contents';
+
+  document.title = game.name || 'Игра';
+
+  const logo = document.getElementById('logo');
+  const title = document.getElementById('title');
+
+  function showTitle() {
+    title.textContent = game.name || 'Игра';
+    title.classList.remove('hidden');
+  }
+
+  if (game.theme && game.theme.logo) {
+    logo.onload = () => {
+      logo.classList.remove('hidden');
+      logo.style.display = 'block';
+    };
+    logo.onerror = () => {
+      logo.classList.add('hidden');
+      showTitle();
+    };
+    logo.src = game.theme.logo;
+    logo.alt = game.name || '';
+  } else {
+    showTitle();
+  }
+
+  new QRCode(document.getElementById('qr'), {
+    text: finalUrl, width: 640, height: 640,
+    colorDark: '#000000',
+    colorLight: '#ffffff',
+    correctLevel: QRCode.CorrectLevel.M
+  });
+
+  document.getElementById('copyBtn').addEventListener('click', async function () {
+    const btn = this;
+    try {
+      await navigator.clipboard.writeText(finalUrl);
+    } catch (e) {
+      const ta = document.createElement('textarea');
+      ta.value = finalUrl;
+      document.body.appendChild(ta);
+      ta.select();
+      document.execCommand('copy');
+      document.body.removeChild(ta);
+    }
+    const oldHTML = btn.innerHTML;
+    btn.innerHTML = btn.innerHTML.replace(/Скопировать ссылку/, 'Скопировано ✓');
+    setTimeout(() => (btn.innerHTML = oldHTML), 1800);
+  });
+
+  function applyTheme(t) {
+    const root = document.documentElement.style;
+    if (t.bg)          root.setProperty('--bg', t.bg);
+    if (t.text)        root.setProperty('--text', t.text);
+    if (t.muted)       root.setProperty('--muted', t.muted);
+    if (t.accent)      root.setProperty('--accent', t.accent);
+    if (t.accentHover) root.setProperty('--accent-hover', t.accentHover);
+    if (t.accentText)  root.setProperty('--accent-text', t.accentText);
+  }
+
+  function buildUrl(base, paramName, refValue) {
+    let url;
+    try {
+      url = new URL(base);
+    } catch (e) {
+      return base;
+    }
+    if (refValue) url.searchParams.set(paramName, refValue);
+    return url.toString();
+  }
+
+  function showError(msg) {
+    document.getElementById('loading').classList.add('hidden');
+    document.getElementById('error').classList.remove('hidden');
+    document.getElementById('errorText').textContent = msg;
+  }
+
+  function escapeHtml(s) {
+    return String(s).replace(/[&<>"']/g, c => ({
+      '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+    }[c]));
+  }
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,35 @@
+{
+  "defaultGame": "grillkingpuzzle",
+  "games": {
+    "grillkingpuzzle": {
+      "name": "GRILL KING PUZZLE",
+      "url": "https://demo-grillkingpuzzle.ruvirogames.online",
+      "refParam": "ref",
+      "theme": {
+        "bg": "#2b2b2f",
+        "text": "#fff7ed",
+        "muted": "#ffffff",
+        "accent": "#f97316",
+        "accentHover": "#ea580c",
+        "accentText": "#ffffff",
+        "qrBg": "#ffffff",
+        "logo": "logos/grillkingpuzzle.png"
+      }
+    },
+    "baristapuzzle": {
+      "name": "BARISTA PUZZLE",
+      "url": "https://demo-baristapuzzle.ruvirogames.online",
+      "refParam": "ref",
+      "theme": {
+        "bg": "#f4ece2",
+        "text": "#2b2b2f",
+        "muted": "#2b2b2f",
+        "accent": "#a0522d",
+        "accentHover": "#8b4513",
+        "accentText": "#ffffff",
+        "qrBg": "#ffffff",
+        "logo": "logos/baristapuzzle.png"
+      }
+    }
+  }
+}
