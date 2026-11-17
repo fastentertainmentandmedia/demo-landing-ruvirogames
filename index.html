@@ -65,7 +65,7 @@
   }
 
   p.sub {
-    font-size: clamp(13px, 2.4vw, 15px);
+    font-size: clamp(15px, 2.4vw, 18px);
     color: var(--muted);
     line-height: 1.45;
     max-width: min(310px, 100%);
@@ -192,16 +192,38 @@
   const gameKey = params.get('game') || '';
   const force = params.get('force');
 
-  let config;
-  try {
-    const res = await fetch('config.json', { cache: 'no-store' });
-    if (!res.ok) throw new Error('HTTP ' + res.status);
-    config = await res.json();
-  } catch (e) {
-    showError('Не удалось загрузить конфигурацию: ' + e.message);
+  // ---- Загружаем config.json и counters.json параллельно ----
+  let config = null;
+  let counters = null;
+
+  const [configResult, countersResult] = await Promise.allSettled([
+    fetch('config.json', { cache: 'no-store' }).then(r => {
+      if (!r.ok) throw new Error('config.json: HTTP ' + r.status);
+      return r.json();
+    }),
+    fetch('counters.json', { cache: 'no-store' }).then(r => {
+      if (!r.ok) throw new Error('counters.json: HTTP ' + r.status);
+      return r.json();
+    })
+  ]);
+
+  if (configResult.status === 'fulfilled') {
+    config = configResult.value;
+  } else {
+    showError('Не удалось загрузить конфигурацию: ' + configResult.reason.message);
     return;
   }
 
+  if (countersResult.status === 'fulfilled') {
+    counters = countersResult.value;
+  } else {
+    console.warn('[counters] не удалось загрузить counters.json:', countersResult.reason.message);
+  }
+
+  const metrikaId = counters && counters.yandexMetrikaId;
+  const goatUrl   = counters && counters.goatcounterUrl;
+
+  // ---- Выбор игры ----
   const key = gameKey || config.defaultGame;
   const game = key && config.games ? config.games[key] : null;
 
@@ -216,6 +238,14 @@
 
   const finalUrl = buildUrl(game.url, game.refParam || 'ref', ref);
 
+  // ---- Заголовок ДО редиректа: чтобы и на мобилке счётчики видели название игры ----
+  document.title = game.name || key || 'Игра';
+
+  // ---- Инициализация счётчиков (заголовок уже правильный) ----
+  if (metrikaId) initMetrika(metrikaId);
+  if (goatUrl)   initGoatCounter(goatUrl);
+
+  // ---- Определение устройства ----
   const ua = navigator.userAgent || '';
   let isMobile =
     /Android|iPhone|iPad|iPod|Opera Mini|IEMobile|Mobile/i.test(ua) ||
@@ -224,18 +254,19 @@
   if (force === 'desktop') isMobile = false;
   if (force === 'mobile')  isMobile = true;
 
+  // ---- Мобилка: хит в Метрику и редирект ----
   if (isMobile) {
+    sendMetrikaHit(metrikaId, window.location.href, { game: key, ref: ref });
     window.location.replace(finalUrl);
     return;
   }
 
+  // ---- Десктоп ----
   applyTheme(game.theme || {});
 
   document.getElementById('loading').classList.add('hidden');
   document.getElementById('desktop').classList.remove('hidden');
   document.getElementById('desktop').style.display = 'contents';
-
-  document.title = game.name || 'Игра';
 
   const logo = document.getElementById('logo');
   const title = document.getElementById('title');
@@ -283,6 +314,50 @@
     btn.innerHTML = btn.innerHTML.replace(/Скопировать ссылку/, 'Скопировано ✓');
     setTimeout(() => (btn.innerHTML = oldHTML), 1800);
   });
+
+  // ---- Счётчики ----
+
+  function initMetrika(id) {
+    (function(m,e,t,r,i,k,a){
+      m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+      m[i].l=1*new Date();
+      for (var j = 0; j < document.scripts.length; j++) {
+        if (document.scripts[j].src === r) { return; }
+      }
+      k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)
+    })(window, document, 'script', 'https://mc.yandex.ru/metrika/tag.js', 'ym');
+
+    ym(id, 'init', {
+      clickmap: true,
+      trackLinks: true,
+      accurateTrackBounce: true,
+      webvisor: true
+    });
+
+    const ns = document.createElement('noscript');
+    ns.innerHTML = '<div><img src="https://mc.yandex.ru/watch/' + id + '" style="position:absolute; left:-9999px;" alt="" /></div>';
+    document.body.appendChild(ns);
+  }
+
+  function sendMetrikaHit(id, url, hitParams) {
+    if (!id) return;
+    if (typeof ym === 'function') {
+      ym(id, 'hit', url, { params: hitParams });
+    } else {
+      window.ym = window.ym || function(){(window.ym.a = window.ym.a || []).push(arguments)};
+      window.ym(id, 'hit', url, { params: hitParams });
+    }
+  }
+
+  function initGoatCounter(url) {
+    const s = document.createElement('script');
+    s.async = true;
+    s.src = 'goatcounter/count.js';   // локальный файл
+    s.setAttribute('data-goatcounter', url);
+    document.head.appendChild(s);
+  }
+
+  // ---- Вспомогательные ----
 
   function applyTheme(t) {
     const root = document.documentElement.style;

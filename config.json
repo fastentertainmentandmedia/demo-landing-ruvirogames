@@ -1,5 +1,5 @@
 {
-  "defaultGame": "grillkingpuzzle",
+  "defaultGame": "yummydragon",
   "games": {
     "grillkingpuzzle": {
       "name": "GRILL KING PUZZLE",
@@ -29,6 +29,21 @@
         "accentText": "#ffffff",
         "qrBg": "#ffffff",
         "logo": "logos/baristapuzzle.png"
+      }
+    },
+    "yummydragon": {
+      "name": "YUMMY DRAGON",
+      "url": "http://demo-yummydragon.ruvirogames.online",
+      "refParam": "ref",
+      "theme": {
+        "bg": "#f6f4f0",
+        "text": "#262729",
+        "muted": "#5a5450",
+        "accent": "#e8a17a",
+        "accentHover": "#d98a5c",
+        "accentText": "#2a2c2e",
+        "qrBg": "#ffffff",
+        "logo": "logos/yummydragon.svg"
       }
     }
   }
