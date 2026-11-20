@@ -1,5 +1,5 @@
 {
-  "defaultGame": "yummydragon",
+  "defaultGame": "asianpuzzle",
   "games": {
     "grillkingpuzzle": {
       "name": "GRILL KING PUZZLE",
@@ -44,6 +44,21 @@
         "accentText": "#2a2c2e",
         "qrBg": "#ffffff",
         "logo": "logos/yummydragon.svg"
+      }
+    },
+    "asianpuzzle": {
+      "name": "ASIAN PUZZLE",
+      "url": "https://demo-asianpuzzle.ruvirogames.online",
+      "refParam": "ref",
+      "theme": {
+        "bg": "#f5efe2",
+        "text": "#241f1a",
+        "muted": "#7e6e50",
+        "accent": "#c0392b",
+        "accentHover": "#a93226",
+        "accentText": "#fdfaf2",
+        "qrBg": "#ffffff",
+        "logo": "logos/asianpuzzle.png"
       }
     }
   }
