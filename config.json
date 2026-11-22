@@ -16,8 +16,8 @@
         "logo": "logos/grillkingpuzzle.png"
       }
     },
-    "baristapuzzle": {
-      "name": "BARISTA PUZZLE",
+    "coffeepuzzle": {
+      "name": "COFFEE PUZZLE",
       "url": "https://demo-baristapuzzle.ruvirogames.online",
       "refParam": "ref",
       "theme": {
@@ -28,7 +28,7 @@
         "accentHover": "#8b4513",
         "accentText": "#ffffff",
         "qrBg": "#ffffff",
-        "logo": "logos/baristapuzzle.png"
+        "logo": "logos/coffeepuzzle.png"
       }
     },
     "yummydragon": {
