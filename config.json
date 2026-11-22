@@ -18,7 +18,7 @@
     },
     "coffeepuzzle": {
       "name": "COFFEE PUZZLE",
-      "url": "https://demo-baristapuzzle.ruvirogames.online",
+      "url": "https://demo-coffeepuzzle.ruvirogames.online",
       "refParam": "ref",
       "theme": {
         "bg": "#f4ece2",
