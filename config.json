@@ -60,6 +60,21 @@
         "qrBg": "#ffffff",
         "logo": "logos/asianpuzzle.png"
       }
+    },
+    "dragongrill": {
+      "name": "DRAGON GRILL",
+      "url": "https://demo-dragongrill.ruvirogames.online",
+      "refParam": "ref",
+      "theme": {
+        "bg": "#f6f4f0",
+        "text": "#262729",
+        "muted": "#5a5450",
+        "accent": "#e8a17a",
+        "accentHover": "#d98a5c",
+        "accentText": "#2a2c2e",
+        "qrBg": "#ffffff",
+        "logo": "logos/dragongrill.svg"
+      }
     }
   }
 }
