@@ -1,5 +1,5 @@
 {
-  "defaultGame": "asianpuzzle",
+  "defaultGame": "beautypuzzle",
   "games": {
     "grillkingpuzzle": {
       "name": "GRILL KING PUZZLE",
@@ -74,6 +74,21 @@
         "accentText": "#2a2c2e",
         "qrBg": "#ffffff",
         "logo": "logos/dragongrill.svg"
+      }
+    },
+    "beautypuzzle": {
+      "name": "BEAUTY PUZZLE",
+      "url": "https://demo-beautypuzzle.ruvirogames.online",
+      "refParam": "ref",
+      "theme": {
+        "bg": "#000000",
+        "text": "#f5e6ff",
+        "muted": "#a08ab0",
+        "accent": "#ff69b4",
+        "accentHover": "#ff2e9a",
+        "accentText": "#000000",
+        "qrBg": "#ffffff",
+        "logo": "logos/beautypuzzle.png"
       }
     }
   }
